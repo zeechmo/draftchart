@@ -1,0 +1,5 @@
+- setup real email with draftchart.com domain
+- integrate "working" adp source - ffanalytics?
+- click on draft position to highlight draft spots
+- add first aid kit icon to injured
+- touch support (touch punch = use npm)

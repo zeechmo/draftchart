@@ -1,0 +1,443 @@
+<html>
+<head>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="fantasy football rankings, draft chart">
+	<meta name="description" content="Dominate your league with customizable fantasy football rankings aggregated from top experts.">
+	<meta property="og:image" content="/draftboard.JPG">
+    <title>Fantasy Football Rankings</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+    <style>
+	  #main { width: 100% }
+	  .sortable-14 { width: 1100px; }
+	  .sortable-12 { width: 950px; }
+	  .sortable-10 { width: 800px; }
+	  .sortable-8 { width: 650px; }
+	  #grid { margin: auto;}
+      #sortable { list-style-type: none; padding: 0;}
+      #sortable li { margin: 1px 1px 1px 1px;  float: left; width: 75px; height: 65px;  text-align: center; display: table-cell; cursor: grab; color: #333333; font-size: 11px; position: relative; line-height: 14px;}
+	  #nav { background-color: #24292e; font-size: large; color: #19bffe; padding-top: 20px; padding-bottom: 10px; width: 100%; text-align: center; font-family: verdana; }
+	  .subheader { font-size: small; color: #f4D03F;}
+	  #controls { width: 100%; text-align: center; margin-bottom: 10px; }
+	  #save-controls {margin-bottom: 10px;  display: table;  margin-left: auto; margin-right: auto;}
+	  #format { margin-bottom: 10px; margin-left: auto; margin-right: auto; display: table;}
+	  #saveload { float: left;  margin-right: 10px; }
+	  #save-controls .input-group {width: 300px;}
+	  .instructionsHeader { width: 100%; text-align: center;  color: #24292e; font-family: Verdana;}
+	  .instructions { width: 100%; color: #24292e; font-family: Verdana;}
+	  .instructionsul { width: 450px; margin-left: auto; margin-right: auto; }
+	  .RB .front { background-color: #19bffe; }
+	  .RB .back { background-color: #19bffe;}
+	  .WR .front { background-color: #87d37c; }
+	  .WR .back {background-color: #87d37c;}
+	  .QB .front { background-color: #f47983; }
+	  .QB .back {background-color: #f47983;}
+	  .TE .front { background-color: #f4D03F; }
+	  .TE .back {background-color: #f4D03F;}
+	  .PK .front { background-color: #E29C45; }
+	  .PK .back {background-color: #E29C45; }
+	  .DEF .front { background-color: #b390d4; }
+	  .DEF .back {background-color: #b390d4;}
+	  .dark .front { background-color: #444444;  color: #888888 !important; }
+	  .dark .back { background-color: #444444;  color: #888888 !important; }
+	  .vor { left: 3px; bottom: 1px; position: absolute;  color: #666666; }
+	  .team { left: 31px; bottom: 1px; position: absolute; color :#666666; }
+	  
+	  .sortableWrapper { float: left; }
+	  #rowHeader { clear: both; float: left; color: #888888;}
+	  .rowHeader { height: 65px; margin: 1px; line-height: 65px;  width: 20px; margin-bottom: 2px;  border: 1px solid #cccccc; text-align: center;}
+	  #colHeader { margin: auto; padding-left: 22px; margin-top: 20px;  color: #888888;}
+	  .colHeader { width: 75px; float: left; text-align: center; margin: 1px; margin-bottom: 1px; border: 1px solid #cccccc;}
+	  
+	  .favorite { position: absolute; top: 50px; right: 2px; cursor: pointer;}
+	  .glyphicon-star-empty { color: gray; }
+	  .glyphicon-star { color: black; }
+	  
+	  @media only screen and (max-width: 1100px) {
+		  #sortable li { float: unset; display: block; width: 300px; height: 40px;  line-height: 12px; margin-left: auto; margin-right: auto; }
+		  .favorite {  top: 24px }
+		  .colHeader { display: none; }
+		  .rowHeader { display: none; }
+		  .front { width: 300px; !important; height: 40px !important; line-height: 12px !important; padding-top: 8px;}
+		  .back { display: none; }
+		  #grid { width: unset; }
+		  #saveload { margin-bottom: 10px;}
+		  #controls {min-width: 300px; }
+		  
+	  }
+	  
+	  @media only screen and (min-width: 1101px) {
+		  .flip-container {
+				position:relative;
+				-webkit-perspective: 1000;
+				-moz-perspective: 1000;
+				-ms-perspective: 1000;
+				perspective: 1000;
+			}
+			.flip-container:hover .flipper {
+				-webkit-backface-visibility: hidden;
+				-moz-backface-visibility: hidden;
+				backface-visibility: hidden;
+				-ms-backface-visibility: hidden;
+				-webkit-transform: rotateY(180deg);
+				-moz-transform: rotateY(180deg);
+				-o-transform:rotateY(180deg);
+				transform: rotateY(180deg);
+				-ms-transform: rotateY(180deg);
+				filter: FlipH;
+				-moz-filter: FlipH;
+				-ms-filter:"FlipH";
+			}
+			
+			.flipper {
+				-webkit-transition: 0.8s;
+				-webkit-transform-style: preserve-3d;
+				-ms-transition: 0.8s;
+				-ms-transform-style: preserve-3d;
+				-moz-transition: 0.8s;
+				-moz-transform-style: preserve-3d;
+				transition: 0.8s;
+				transform-style: preserve-3d;
+				position: relative;
+			}
+
+			.front, .back {
+				-webkit-backface-visibility: hidden;
+				-moz-backface-visibility: hidden;
+				-ms-backface-visibility: hidden;
+				backface-visibility: hidden;
+				position: absolute;
+				width: 75px;
+				height: 65px;
+				padding-top: 8px;
+			}
+
+			.front:hover {
+				transition: all 0.7s ease-in-out;
+				-moz-transition: all 0.7s ease-in-out;
+				-webkit-transition: all 0.7s ease-in-out;
+			}
+			.back {
+				-webkit-transform: rotateY(180deg);
+				-ms-transform: rotateY(180deg);
+				-moz-transform: rotateY(180deg);
+				transform: rotateY(180deg);
+				filter: FlipH;
+				-ms-filter: FlipH;
+			}
+		}
+	  
+    </style>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105793798-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+	<script src="/underscore/underscore.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script>
+	
+	var savedPlayers = [];
+	
+	var loadGrid = function(players, teams) {
+	
+		var gridWidth = teams || 12;
+		
+		// clear existing grid
+		$("#sortable").empty();
+		
+		for (var i = 0; i < players.length; i++) {
+			var playerName = players[i].playerName;
+			var position = players[i].position;
+			var team = players[i].team;
+			if (playerName) {
+				var id = playerName + "|" + position + "|" + team;
+				$("#sortable")
+					.append("<li id='" + id + "' class='" + position + 
+					" flip-container'><div class='flipper'><div class='front'><div class='glyphicon glyphicon-star-empty favorite'></div>" + playerName + "<br />" + position + "<span class='vor'>" + (Math.round(players[i].vor) > 0 ? "+":"") + Math.round(players[i].vor) + "</span><span class='team'>" + players[i].team + "</span></div>" +
+					"<div class='back'><div class='glyphicon glyphicon-star-empty favorite'></div>Points: " + Math.round(players[i].points) + "<br />Cost: $" + players[i].auctionValue + "<br />VOR: " + Math.round(players[i].vor) + "</div></div></li>")
+					.data("stats", {playerName: playerName, position: position});
+			}
+		}
+		
+		setGridWidth(gridWidth);
+		
+		$( "#sortable" ).sortable({
+			cursor: "grabbing",
+			helper: "clone"
+		});
+		$( "#sortable" ).disableSelection();	
+	}
+	
+	var setGridWidth = function(cols) {
+		$( "#grid" ).removeClass("sortable-8").removeClass("sortable-10").removeClass("sortable-12").removeClass("sortable-14");
+		$( "#colHeader" ).removeClass("sortable-8").removeClass("sortable-10").removeClass("sortable-12").removeClass("sortable-14");
+		$( "#grid" ).addClass("sortable-" + cols);
+		$("#colHeader").addClass('sortable-' + cols);
+		
+		$("#rowHeader").empty();
+		$("#colHeader").empty();
+		
+		for (var i = 0; i < cols; i++) {
+			$( "#colHeader" ).append("<div class='colHeader'>" + (i+1) + "</div>");
+		}
+		var rows = Math.ceil(savedPlayers.length / cols);
+		for (var i = 0; i < rows; i++) {
+			$( "#rowHeader" ).append("<div class='rowHeader'>" + (i+1) + "</div>");
+		}
+	}
+	
+	var getData = function(req) {
+		$.get(
+			"/draftboard",
+			req,
+			function(data, status) {
+				
+				var players = JSON.parse(data);
+				savedPlayers = players;
+			   
+				loadGrid(players, req.teams);
+			}
+		);	
+	}
+	
+	var toJson = function(players) {
+		return _.map(players, function(player) {
+			var tokens = player.split("|");
+			return {
+				"playerName": tokens[0],
+				"position": tokens[1],
+				"team": tokens[2]
+			};
+		});	
+	}
+	
+    $( function() {
+	
+		// only allow btn in group to appear selected
+		$(".btn-group > .btn").click(function(){
+			$(this).addClass("active").siblings().removeClass("active");
+		});	
+		
+		// click handlers
+		$("#format").click(function() {
+			var format = $('#format > .btn.active').text();
+			var teams = parseInt($('#teams > .btn.active').val(), 10);
+			
+			getData({
+				format: format,
+				teams: teams
+			});
+
+			alert('Projected points have been updated to reflect a ' + format + ' scoring system.');
+		});
+		
+		$("#save").click(function() {
+			// serialize data
+			var players = $("#sortable").sortable('toArray');
+			window.localStorage.setItem("rank", players);
+			
+			var dark = [];
+			$(".dark").each(function() {
+				dark.push(this.id);
+			});
+			window.localStorage.setItem("dark", dark);
+			
+			var favorites = [];
+			$(".isfavorite.front").each(function() {
+				favorites.push($(this).closest("li").attr("id"));
+			});
+			window.localStorage.setItem("favorites", favorites);
+			
+			var teams = $("#teams > .btn.active").attr('id').split("team")[0];
+			window.localStorage.setItem("teams", teams);
+			
+			alert('Data is saved to the browser, and available to retrieve by clicking "Load".');
+		});
+
+		$("#load").click(function() {
+			var players = window.localStorage.getItem("rank").split(",");
+			var teams = window.localStorage.getItem("teams");
+			var dark = window.localStorage.getItem("dark");
+			var favorites = window.localStorage.getItem("favorites");
+			var format = window.localStorage.getItem("format");
+			
+			// map to json
+			players = toJson(players);
+			
+			// initiate click to set grid size
+			$("#" + teams + "team").trigger('click');
+			
+			// set favorites and excludes
+			_.each(dark.split(","), function(item) {
+				$("li[id='" + item + "']").addClass('dark');
+			});
+			_.each(favorites.split(","), function(item) {
+				$("li[id='" + item + "']").addClass('isfavorite');
+				$("li[id='" + item + "'] .front .glyphicon").removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+				$("li[id='" + item + "'] .back .glyphicon").removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+			});
+		});
+		
+		$("#email").click(function(){
+			var email = $('#emailinput').val();
+			if (!email) {
+				alert("Email is required.");
+				return;
+			}
+			
+			var players = $("#sortable").sortable('toArray');
+			
+			players = toJson(players);
+			
+			var dark = [];
+			$(".dark").each(function() {
+				dark.push(this.id);
+			});
+			dark = toJson(dark);
+			
+			var favorites = [];
+			$(".isfavorite").each(function() {
+				favorites.push($(this).closest("li").attr("id"));
+			});
+			favorites = toJson(favorites);
+			
+			_.each(players, function(player) {
+			    _.each(dark, function(d) {
+					if (player.playerName === d.playerName && player.team === d.team) {
+					    player.dark = true;
+					}
+				});
+			    _.each(favorites, function(f) {
+					if (player.playerName === f.playerName && player.team === f.team) {
+					    player.favorite = true;
+					}
+				});				
+			});
+			
+			$.ajax({
+			    type: "POST",
+				url: "/email",
+				processData: false,
+				contentType: 'application/json',
+				data: JSON.stringify({
+					players: players,
+					email: email
+				}),
+				success: function(data, status) {
+					
+					var response = JSON.parse(data);
+					if (response.success) {
+						alert('An email of your pre-selected draft order has been sent to ' + email);
+					}
+					else {
+						alert(response.errorMsg);
+					}
+				}
+			});
+
+		});
+		
+		$("#teams > .btn").click(function() {
+			setGridWidth(parseInt($(this).attr('id').split("team")[0], 10));
+		});
+		
+		$("#sortable").on("click", "li", function(){
+			$(this).toggleClass('dark');
+		});
+		
+		$("#sortable").on("click", ".favorite", function() {
+			
+			if ($(this).hasClass("glyphicon-star")) {
+				$(this).removeClass("glyphicon-star").addClass("glyphicon-star-empty");
+				$(this).parent().parent().find(".front div").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
+				$(this).parent().removeClass("isfavorite");
+				$(this).parent().parent().find(".front div").parent().removeClass("isfavorite");
+			}
+			else {
+				$(this).removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+				$(this).parent().parent().find(".front div").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+				$(this).parent().addClass("isfavorite");
+				$(this).parent().parent().find(".front div").parent().addClass("isfavorite");
+			}
+			
+			return false;
+		});
+		
+		getData({
+		    format: 'standard',
+			teams: 12
+		});
+
+    } );
+    </script>
+</head>
+
+<body>
+    <div id="main">
+		<div id="nav">DRAFTCHART <div class="subheader">DOMINATE YOUR DRAFT</div></div>
+		<div class="well">
+			<div id="controls">
+				 <div class="btn-group" id="teams">
+					<button type="button" id="8team" class="btn btn-default" value="8">8 team</button>
+					<button type="button" id="10team" class="btn btn-default" value="10">10 team</button>
+					<button type="button" id="12team" class="btn btn-default active" value="12">12 team</button>
+					<button type="button" id="14team" class="btn btn-default" value="14">14 team</button>
+				</div>
+			</div>
+			<div class="btn-group" id="format">
+				<button type="button" id="standard" class="btn btn-default active">Standard</button>
+				<button type="button" id="ppr" class="btn btn-default">PPR</button>
+			</div>
+			<div id="save-controls">
+				<div class="btn-group" id="saveload">
+					<button type="button" id="load" class="btn btn-default">Load</button>
+					<button type="button" id="save" class="btn btn-default">Save</button>
+				</div>
+				<div class="input-group">
+					<input type="text" class="form-control" id="emailinput">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" id="email">Email</button>
+						</span>
+					</input>
+				</div>
+			</div>
+		</div>
+		<div class="instructionsHeader"><h3>Fantasy Football Rankings</h3></div>
+		<div class="instructions">
+			<ul class="instructionsul">
+				<li>Start with aggregated draft picks from fantasy experts</li>
+				<li>Drag and drop to create custom draft rankings</li>
+				<li>Star your favorites</li>
+				<li>Click to remove a player entirely from your rankings</li>
+				<li>Save your selections or email them to yourself</li>
+			</ul>
+		</div>
+  		<div class="instructions"></div>
+		<div id="colHeader"></div>
+		<div id="grid">
+			<div id="rowHeader"></div>
+			<div id="sortableWrapper"><ul id="sortable"></ul></div>
+		</div>
+	</div>
+
+</body>
+</html>

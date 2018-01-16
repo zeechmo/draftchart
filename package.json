@@ -1,0 +1,23 @@
+{
+  "name": "football-draft-ranker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "csv-to-json": "^0.1.2",
+    "express": "^4.15.4",
+    "gridstack": "^0.3.0",
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
+    "nodemailer": "^4.0.1",
+    "underscore": "^1.8.3",
+    "xml2js": "^0.4.18"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zachb",
+  "license": "ISC"
+}
