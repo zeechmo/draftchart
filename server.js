@@ -6,25 +6,25 @@ const _ = require('underscore')
 const config = require('./config')
 const bodyParser = require("body-parser");
 const csvtojson = require("csv-to-json");
-const app = express()  
+const parentApp = express()  
 const port = 3000
 
 // server html
-app.use(express.static('public'))
+parentApp.use(express.static('public'))
 // server js libaries
-app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
-app.use('/gridstack', express.static(__dirname + '/node_modules/gridstack/dist/'));
-app.use('/underscore', express.static(__dirname + '/node_modules/underscore/'));
+parentApp.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
+parentApp.use('/gridstack', express.static(__dirname + '/node_modules/gridstack/dist/'));
+parentApp.use('/underscore', express.static(__dirname + '/node_modules/underscore/'));
 
 //Here we are configuring express to use body-parser as middle-ware.
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+parentApp.use(bodyParser.urlencoded({ extended: false }));
+parentApp.use(bodyParser.json());
 
-app.get('/', (request, response) => {  
+parentApp.get('/', (request, response) => {  
   response.send('Hello from Express!')
 })
 
-app.post('/email', (request, response) => {
+parentApp.post('/email', (request, response) => {
 
 	var players = request.body.players;
 	var email = request.body.email;
@@ -74,7 +74,7 @@ app.post('/email', (request, response) => {
 	});
 })
 
-app.get('/draftboard', (request, response) => {  
+parentApp.get('/draftboard', (request, response) => {  
 
 	var format = request.query.format || 'standard';
 	var teams = request.query.teams;
@@ -99,7 +99,6 @@ app.get('/draftboard', (request, response) => {
 		filename: format === "PPR" ? 'public/ppr_rank.csv' : 'public/standard_rank.csv'
 	};
 	csvtojson.parse(obj, function(err, json) {
-		
 		response.send(JSON.stringify(json));
 	});
 	
@@ -152,7 +151,7 @@ app.get('/draftboard', (request, response) => {
 })
 
 
-app.listen(port, (err) => {  
+parentApp.listen(port, (err) => {  
   if (err) {
     return console.log('something bad happened', err)
   }
