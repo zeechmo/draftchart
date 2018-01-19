@@ -115,8 +115,8 @@ parentApp.post('/email', (request, response) => {
 })
 
 parentApp.get('/draft-chart', (request, response) => {
-	res.sendFile(path.join(__dirname + '/draftboard.html'));
-}
+	response.sendFile(path.join(__dirname + '../public/draftboard.html'));
+})
 
 parentApp.get('/draftboard', (request, response) => {  
 
